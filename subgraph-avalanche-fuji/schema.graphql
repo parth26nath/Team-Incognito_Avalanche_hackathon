@@ -1,0 +1,61 @@
+type User @entity {
+  id: ID! # Wallet address of the user
+  balance: BigInt! # User's current balance in USDC
+  deposits: [Deposit!]! @derivedFrom(field: "user") # List of deposits
+  withdrawals: [Withdrawal!]! @derivedFrom(field: "user") # List of withdrawals
+  calls: [Call!]! @derivedFrom(field: "user") # Associated calls
+}
+
+type Expert @entity {
+  id: ID! # Wallet address of the expert
+  name: String! # Expert's name
+  cid: String # IPFS CID
+  rating: BigInt!
+  expertise: String! # Field of expertise
+  balance: BigInt! # Expert's current balance in USDC
+  withdrawals: [Withdrawal!]! @derivedFrom(field: "expert")
+  voiceRatePerMinute: BigInt! # Rate for voice calls per minute in USDC
+  videoRatePerMinute: BigInt! # Rate for video calls per minute in USDC
+  isRegistered: Boolean! # Registration status
+  calls: [Call!]! @derivedFrom(field: "expert") # Associated calls
+  flags: BigInt!
+}
+
+type Call @entity {
+  id: ID! # Unique call ID
+  user: User! # User who initiated the call
+  expert: Expert! # Expert who is part of the call
+  callType: String! # VOICE or VIDEO
+  status: String! # Current status of the call (SCHEDULED, ACTIVE, etc.)
+  actualDuration: BigInt # Actual duration in minutes
+  stakedAmount: BigInt! # Amount staked for the call
+  amountPaid: BigInt # Amount paid for the call
+  startTime: BigInt # Timestamp when the call started
+  endTime: BigInt # Timestamp when the call ended
+  scheduledAt: BigInt! # Timestamp when the call was scheduled
+  platformFee: BigInt # Fee taken by the platform
+  rating: BigInt
+  flag: Boolean
+}
+
+type Deposit @entity {
+  id: ID!
+  user: User! # User who made the deposit
+  amount: BigInt! # Amount deposited
+  timestamp: BigInt! # Time of the deposit
+}
+
+type Withdrawal @entity {
+  id: ID!
+  amount: BigInt! # Amount withdrawn
+  timestamp: BigInt! # Time of withdrawal
+  user: User # User who made the withdrawal
+  expert: Expert # Expert who made the withdrawal
+  platform: Platform # Platform that processed the withdrawal
+}
+
+type Platform @entity {
+  id: ID! # Single instance (e.g., "1")
+  totalFeesCollected: BigInt! # Total fees collected by the platform
+  withdrawals: [Withdrawal!]! @derivedFrom(field: "platform") # List of platform withdrawals
+}

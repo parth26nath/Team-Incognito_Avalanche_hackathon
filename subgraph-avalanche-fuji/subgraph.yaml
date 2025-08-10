@@ -1,0 +1,57 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: heartly
+    network: fuji
+    source:
+      address: "0xAa8f12b2a7C8d5a1748DcCc42B4E3E15Edf9E77d" # Deployed on Avalanche Fuji
+      abi: heartly
+      startBlock: 44568944 # Block number from transaction
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - BalanceWithdrawn
+        - CallCancelled
+        - CallEnded
+        - CallHold
+        - CallScheduled
+        - CallStarted
+        - Deposited
+        - ExpertBalanceWithdrawn
+        - ExpertRegistered
+        - OwnershipTransferred
+        - PlatformBalanceWithdrawn
+        - updatedExpertrates
+      abis:
+        - name: heartly
+          file: ./abis/heartly.json
+      eventHandlers:
+        - event: BalanceWithdrawn(indexed address,uint256)
+          handler: handleBalanceWithdrawn
+        - event: CallCancelled(indexed bytes32)
+          handler: handleCallCancelled
+        - event: CallEnded(indexed bytes32,indexed address,indexed address,uint256,uint256,uint256,bool)
+          handler: handleCallEnded
+        - event: CallHold(indexed bytes32)
+          handler: handleCallHold
+        - event: CallScheduled(indexed bytes32,indexed address,indexed address,uint8,uint256)
+          handler: handleCallScheduled
+        - event: CallStarted(indexed bytes32,indexed address,indexed address,uint256)
+          handler: handleCallStarted
+        - event: Deposited(indexed address,uint256)
+          handler: handleDeposited
+        - event: ExpertBalanceWithdrawn(indexed address,uint256)
+          handler: handleExpertBalanceWithdrawn
+        - event: ExpertRegistered(indexed address,string,uint256,uint256,string,string)
+          handler: handleExpertRegistered
+        - event: PlatformBalanceWithdrawn(indexed address,uint256)
+          handler: handlePlatformBalanceWithdrawn
+        - event: updatedExpertrates(indexed address,bool,uint256)
+          handler: handleupdatedExpertrates
+      file: ./src/heartly.ts

@@ -1,0 +1,32 @@
+{
+  "name": "heartly-contracts",
+  "version": "1.0.0",
+  "description": "Heartly smart contracts for Avalanche",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:fuji": "hardhat run scripts/deploy-and-setup.js --network fuji",
+    "deploy:avalanche": "hardhat run scripts/deploy-and-setup.js --network avalanche",
+    "deploy:simple:fuji": "hardhat run scripts/deploy.js --network fuji",
+    "deploy:simple:avalanche": "hardhat run scripts/deploy.js --network avalanche",
+    "verify:fuji": "hardhat verify --network fuji",
+    "verify:avalanche": "hardhat verify --network avalanche",
+    "demo": "hardhat run scripts/demo.js --network fuji"
+  },
+  "keywords": [
+    "avalanche",
+    "defi",
+    "mental-health"
+  ],
+  "author": "Heartly Team",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.17"
+  }
+}
